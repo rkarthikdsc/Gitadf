@@ -1,0 +1,30 @@
+{
+	"name": "DS_output_destination_param",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureDataLakeStorage_destination",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"output_filename": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "DS_parameters"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "output"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
