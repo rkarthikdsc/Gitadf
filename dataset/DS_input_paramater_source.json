@@ -1,0 +1,32 @@
+{
+	"name": "DS_input_paramater_source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DS_AzureDataLakeStorage_filesource",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"extract_data": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().extract_data",
+					"type": "Expression"
+				},
+				"fileSystem": "input"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

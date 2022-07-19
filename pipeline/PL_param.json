@@ -1,0 +1,91 @@
+{
+	"name": "PL_param",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Ds_Input",
+						"type": "DatasetReference",
+						"parameters": {
+							"input_filename": {
+								"value": "@pipeline().parameters.Inputfilename",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Ds_output",
+						"type": "DatasetReference",
+						"parameters": {
+							"Output_filename": {
+								"value": "@pipeline().parameters.Outputfilename",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"Inputfilename": {
+				"type": "string"
+			},
+			"Outputfilename": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Parameterized_pl"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-07-16T03:10:13Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

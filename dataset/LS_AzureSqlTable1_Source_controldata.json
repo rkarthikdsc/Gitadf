@@ -1,0 +1,17 @@
+{
+	"name": "LS_AzureSqlTable1_Source_controldata",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSqlDatabase1_source_Data",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "tblControl"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,122 @@
+{
+	"name": "PL_tr_la_datacopy",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Metadata_ADLS_input",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "DS_DelimitedText_getmeta_source",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
+						"modifiedDatetimeStart": {
+							"value": "@adddays(utcnow(),-10)",
+							"type": "Expression"
+						},
+						"modifiedDatetimeEnd": {
+							"value": "@utcnow()",
+							"type": "Expression"
+						},
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "Filter US sales file",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata_ADLS_input",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata_ADLS_input').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@startswith(item().name,'U') ",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "send pipeline notification mail",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Filter US sales file",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod2-38.eastus.logic.azure.com:443/workflows/940a7b6d8b434413b5968bbcc2024557/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=EY7L3lJojIgGN3lFcTiW3raLXyZOCSZAtNTFsn-YSqs",
+					"method": "GET"
+				}
+			},
+			{
+				"name": "execution failed",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Filter US sales file",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod2-49.eastus.logic.azure.com:443/workflows/a9c124ddd574454dbd0abdaecf8522ab/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=litTpkLcEGavrmgWSuC3C7jco3dVX_4PwHa7HDd09K8",
+					"method": "GET"
+				}
+			}
+		],
+		"folder": {
+			"name": "logic_apps"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-07-14T07:16:59Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

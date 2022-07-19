@@ -1,0 +1,91 @@
+{
+	"name": "PL_copy_data_parama",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy datafs",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_input_paramater_source",
+						"type": "DatasetReference",
+						"parameters": {
+							"extract_data": {
+								"value": "@pipeline().parameters.input_extract_file",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_output_parama",
+						"type": "DatasetReference",
+						"parameters": {
+							"transformed_data": {
+								"value": "@pipeline().parameters.output_transformed_file",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"input_extract_file": {
+				"type": "string"
+			},
+			"output_transformed_file": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Parameterized_pl"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-07-18T07:13:50Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

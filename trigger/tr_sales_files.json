@@ -1,0 +1,24 @@
+{
+	"name": "tr_sales_files",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "PL_tr_la_datacopy",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2022-07-14T07:01:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}

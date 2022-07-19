@@ -1,0 +1,9 @@
+{
+	"name": "tap-miome3",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "87412aad-a26a-4ef9-9dc0-ddd2907d6a92",
+		"tenantId": "2f0762da-61b8-48a2-b559-cb34af004ad0"
+	}
+}

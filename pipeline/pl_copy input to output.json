@@ -1,0 +1,99 @@
+{
+	"name": "pl_copy input to output",
+	"properties": {
+		"activities": [
+			{
+				"name": "copy input to output",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_DelimitedText",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_DelimitedText_output",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "copy email data",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "copy input to output",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod2-38.eastus.logic.azure.com:443/workflows/940a7b6d8b434413b5968bbcc2024557/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=EY7L3lJojIgGN3lFcTiW3raLXyZOCSZAtNTFsn-YSqs",
+					"method": "POST",
+					"body": {
+						"value": "{\n\n\"Title\": \"This is a message from Azure ADF\",\n\"Message\": \"Pipeline for copying sales file has been successfully executed\",\n\"DataFactoryName\": \"@{pipeline().DataFactory}\",\n\"PipelineName\": \"@{pipeline().Pipeline}\",\n\"TriggerName\": \"@{pipeline().TriggerName}\",\n\n}",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "logic_apps"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-07-15T02:48:43Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

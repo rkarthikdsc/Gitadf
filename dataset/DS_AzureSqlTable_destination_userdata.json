@@ -1,0 +1,17 @@
+{
+	"name": "DS_AzureSqlTable_destination_userdata",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_AzureSqlDatabase1_Destination_data",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "userData"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
