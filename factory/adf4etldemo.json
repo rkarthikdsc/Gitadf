@@ -1,0 +1,9 @@
+{
+	"name": "adf4etldemo",
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f52806b8-c07d-442e-b4ea-cfd455053fef",
+		"tenantId": "0b4650dd-44b5-417d-8de4-f79cd5684e2e"
+	}
+}
